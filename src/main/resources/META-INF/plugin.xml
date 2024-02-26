@@ -1,0 +1,65 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
+    <id>com.griffin.jsontotypescriptclass</id>
+
+    <!-- Public plugin name should be written in Title Case.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
+    <name>JSON To TypeScript Class</name>
+
+    <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
+    <vendor email="a912816369@gmail.com" url="https://github.com/Chen-Xi-g">Griffin</vendor>
+
+    <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
+         Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
+    <description>
+        <![CDATA[
+        <html>
+            <body>
+                <h2>JSON To TypeScript Class</h2>
+                <p>
+                    <strong>Plugin to support JSON to TypeScript entity class conversion in Huawei DevEco Studio.</strong>
+                </p>
+                <h3>Usage</h3>
+                <p>
+                    <strong>Step 1:</strong>
+                    <ul>
+                        <li>Select the directory where you want to generate TypeScript entity classes.</li>
+                    </ul>
+                </p>
+                <p>
+                    <strong>Step 2:</strong>
+                    <ul>
+                        <li>Right-click on the directory and select "Json To TypeScript Class" from the context menu.</li>
+                    </ul>
+                </p>
+                <p>
+                    <strong>Step 3:</strong>
+                    <ul>
+                        <li>Enter the JSON string and the desired class name in the dialog box, then click OK.</li>
+                    </ul>
+                </p>
+            </body>
+        </html>
+    ]]>
+    </description>
+
+    <!-- Product and plugin compatibility requirements.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
+    <depends>com.intellij.modules.platform</depends>
+
+    <!-- Extension points defined by the plugin.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
+    <extensions defaultExtensionNs="com.intellij">
+
+    </extensions>
+
+    <actions>
+        <group icon="AllIcons.Actions.MoveToButton">
+            <add-to-group anchor="before" group-id="NewGroup" relative-to-action="NewFile"/>
+            <action class="com.griffin.jsontotypescriptclass.action.JsonToTsAction" icon="/icons/ic_griffin_action.png"
+                    text="Json To TS Class"/>
+        </group>
+    </actions>
+</idea-plugin>
