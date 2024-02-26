@@ -2,6 +2,16 @@
 
 Plugin to support JSON to TypeScript entity class conversion in Huawei DevEco Studio.
 
+## Download and install.
+
+> You can download the latest version of the `JsonToTypeScriptClassPlugin-1.0.0.jar` file from the Release page.
+>
+> or install it by downloading the `JsonToTypeScriptClassPlugin-1.0.0.jar` file from the runJar directory in the root folder.
+
+~~Download through the IntelliJ IDEA Plugin Marketplace: Go to Download.~~
+
+![Install Plugin](https://github.com/Chen-Xi-g/JsonToTypeScriptPlugin/blob/main/images/InstallPlugin.gif)
+
 ## Usage
 
 * Step 1:
@@ -12,3 +22,5 @@ Plugin to support JSON to TypeScript entity class conversion in Huawei DevEco St
 
 * Step 3:
   Enter the JSON string and the desired class name in the dialog box, then click OK.
+
+![Usage](https://github.com/Chen-Xi-g/JsonToTypeScriptPlugin/blob/main/images/UsageGif.gif)
