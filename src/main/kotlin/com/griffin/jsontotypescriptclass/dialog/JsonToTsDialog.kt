@@ -4,6 +4,7 @@ import com.google.gson.GsonBuilder
 import com.google.gson.JsonElement
 import com.google.gson.JsonParseException
 import com.google.gson.JsonParser
+import com.griffin.jsontotypescriptclass.data.Properties
 import com.intellij.ide.actions.MaximizeActiveDialogAction
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.DialogWrapper
@@ -15,7 +16,11 @@ import com.intellij.uiDesigner.core.GridConstraints
 import com.intellij.uiDesigner.core.GridLayoutManager
 import java.awt.Dimension
 import java.awt.Insets
+import java.awt.event.FocusEvent
+import java.awt.event.FocusListener
 import javax.swing.*
+import javax.swing.event.DocumentEvent
+import javax.swing.event.DocumentListener
 
 class JsonToTsDialog(
         project: Project,
@@ -51,7 +56,7 @@ class JsonToTsDialog(
     override fun createCenterPanel(): JComponent {
         // 创建内容布局
         val panel = JPanel()
-        val gridLayoutManager = GridLayoutManager(3, 3, Insets(10, 10, 10, 10), -1, -1)
+        val gridLayoutManager = GridLayoutManager(5, 3, Insets(10, 10, 10, 10), -1, -1)
         gridLayoutManager.hGap = 10
         panel.layout = gridLayoutManager
         panel.add(tips, GridConstraints(0, 0, 1, 3, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false))
@@ -73,6 +78,53 @@ class JsonToTsDialog(
         // 添加 ActionListener 到按钮
         formatJsonButton.addActionListener { e -> onFormatJsonButtonClick() }
         panel.add(formatJsonButton, GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false))
+
+        panel.add(
+            JCheckBox("Optional parameters(allow undefined)").apply {
+                isSelected = Properties.isOptional
+                addChangeListener { event -> Properties.isOptional = (event.source as JCheckBox).isSelected }
+            },
+            GridConstraints(3, 0, 1, 3, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false)
+        )
+
+        panel.add(
+            JLabel("Indent space:"),
+            GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false)
+        )
+        panel.add(
+            JTextField(Properties.indentSpace.toString()).apply {
+                document.addDocumentListener(object: DocumentListener {
+                    override fun insertUpdate(e: DocumentEvent?) {
+                        updateIndentSpace()
+                    }
+
+                    override fun removeUpdate(e: DocumentEvent?) {
+                        updateIndentSpace()
+                    }
+
+                    override fun changedUpdate(e: DocumentEvent?) {
+                        updateIndentSpace()
+                    }
+
+                    private fun updateIndentSpace() {
+                        runCatching {
+                            Properties.indentSpace = text.trim().toInt().coerceIn(0, 16)
+                        }
+                    }
+                })
+                addFocusListener(object :FocusListener {
+                    override fun focusGained(e: FocusEvent?) {
+
+                    }
+
+                    override fun focusLost(e: FocusEvent?) {
+                        text = Properties.indentSpace.toString()
+                    }
+                })
+            },
+            GridConstraints(4, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false)
+        )
+
         panel.maximumSize = Dimension(800, 600)
         return panel
     }
