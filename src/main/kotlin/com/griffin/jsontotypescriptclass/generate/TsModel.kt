@@ -1,6 +1,7 @@
 package com.griffin.jsontotypescriptclass.generate
 
 import com.google.gson.*
+import com.griffin.jsontotypescriptclass.data.Properties
 import java.util.*
 
 object TsModel {
@@ -21,17 +22,15 @@ object TsModel {
             className: String,
             jsonElement: JsonElement
     ): String {
+        val optionalMark: String = if (Properties.isOptional) "?" else ""
+        val indent: String = " ".repeat(Properties.indentSpace)
+
         val fieldsText = when {
             jsonElement.isJsonObject -> {
                 val jsonObject = jsonElement.asJsonObject
                 jsonObject.entrySet().joinToString("\n") { (fieldName, fieldElement) ->
                     val fieldType = getFieldType(fieldElement, fieldName)
-                    // 判断是否为第一个元素，如果是，则前面不需要空格占位符
-                    if (jsonObject.entrySet().first().key == fieldName) {
-                        "$fieldName: $fieldType;"
-                    } else {
-                        "    $fieldName: $fieldType;"
-                    }
+                    "$indent$fieldName$optionalMark: $fieldType;"
                 }
             }
 
@@ -42,14 +41,14 @@ object TsModel {
                     val nestedClassText = generateModelClass(className, firstElement)
                     return """
 export class $className {
-    $nestedClassText[];
+$indent$nestedClassText[];
 }
                 """.trimIndent()
                 } else {
                     // Array of basic types, use 'any[]'
                     return """
 export class $className {
-    items: any[];
+${indent}items: any[];
 }
                 """.trimIndent()
                 }
@@ -63,7 +62,7 @@ export class $className {
 
         return """
 export class $className {
-    $fieldsText
+$fieldsText
 }
     """.trimIndent()
     }
