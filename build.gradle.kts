@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.griffin"
-version = "1.0.2"
+version = "1.0.3"
 
 repositories {
     mavenCentral()
@@ -27,12 +27,15 @@ tasks {
         targetCompatibility = "17"
     }
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions.jvmTarget = "17"
+        kotlinOptions {
+            jvmTarget = "17"
+            freeCompilerArgs = listOf("-Xskip-metadata-version-check") // 加这行
+        }
     }
 
     patchPluginXml {
         sinceBuild.set("222")
-        untilBuild.set("233.*")
+        untilBuild.set("261.*")
     }
 
     signPlugin {
